@@ -1,5 +1,6 @@
-#include<stdio.h>
 #include<iostream>
+
+#include "sudoku_board.h"
 
 using namespace std;
 
