@@ -2,7 +2,7 @@
 #define sudoku_board_h
 
 #include <vector>
-
+#include <memory>
 
 class Field{
     public:
@@ -17,14 +17,13 @@ class SmallSquare{
     //tu utworzyc
     public:
     std::shared_ptr<Field> small_square[3][3];
-
-    SmallSquare();
+    SmallSquare(std::shared_ptr<Field> arr_of_fields[3][3]);
 };
 
 class RowOrColumn{
     public:
     std::shared_ptr<Field> row_or_column[9];
-    RowOrColumn();
+    RowOrColumn(std::shared_ptr<Field> arr_of_fields[9]);
 };
 
 #endif
