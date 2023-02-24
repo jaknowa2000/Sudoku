@@ -1,5 +1,6 @@
 #include<iostream>
 #include<vector>
+#include<set>
 #include<memory> //inteligentne wskazniki
 #include<typeinfo> //pomocne
 
@@ -24,6 +25,32 @@ SmallSquare::SmallSquare(std::shared_ptr<Field> arr_of_fields[3][3]){
     for(int i=0; i<3; i++){
         for(int j=0; j<3; j++){
             small_square[i][j] = arr_of_fields[i][j];
+        }
+    }
+};
+
+
+void SmallSquare::insert_possibilities(){
+    std::set<int> digits_not_used = {1,2,3,4,5,6,7,8,9};
+    for(auto& row : small_square){
+        for(auto& item : row){
+            if(item->isset) digits_not_used.erase(item->value);
+        }
+    }
+    if(digits_not_used.size() == 1) {
+        insert_if_one_possibility(digits_not_used);
+        return;
+    }
+};
+
+void SmallSquare::insert_if_one_possibility(std::set<int> digits_not_used){
+    for(auto& row : small_square){
+        for(auto& item : row){
+            if(!(item->isset)){
+                item->value = *digits_not_used.begin();
+                item->isset = true;
+                return;
+            }
         }
     }
 };
@@ -85,6 +112,14 @@ bool Sudoku::is_solved(){
     return true;
 };
 
+void Sudoku::solve_sudoku(){
+    for(auto& row : small_squares){
+        for(auto& small_square : row){
+            small_square->insert_possibilities();
+        }
+    }
+};
+
 /// @brief This method get from table the data of sudoku puzzle to solve.
 /// @param sudoku_arr This table has to have 81 values, when value is 0 it meaans that
 ///the field in sudoku puzzle was empty.
@@ -107,17 +142,19 @@ void Sudoku::get_data_from_arr(int* sudoku_arr){
 
 int main(){
     auto sudoku1 = std::make_shared<Sudoku>();
-    int example_sudoku_tab[81] = {0,5,1,3,0,9,0,0,6,
-                          0,2,0,8,7,1,3,4,5,
-                          0,0,0,2,0,0,0,0,0,
-                          2,1,9,7,6,4,0,3,0,
-                          0,0,0,1,3,0,0,0,0,
-                          7,3,0,0,0,8,0,6,2,
-                          5,0,0,4,2,0,0,0,3,
-                          0,0,0,9,1,5,0,0,7,
-                          1,9,0,0,0,0,2,0,0};
+    int example_sudoku_tab[81] = {9,5,1,3,0,9,0,0,6,
+                                  0,2,3,8,7,1,3,4,5,
+                                  7,4,6,2,0,0,0,0,0,
+                                  2,1,9,7,6,4,0,3,0,
+                                  0,0,0,1,3,0,0,0,0,
+                                  7,3,0,0,0,8,0,6,2,
+                                  5,0,0,4,2,0,0,0,3,
+                                  0,0,0,9,1,5,0,0,7,
+                                  1,9,0,0,0,0,2,0,0};
     sudoku1->show_sudoku();
     sudoku1->get_data_from_arr(example_sudoku_tab);
+    sudoku1->show_sudoku();
+    sudoku1->solve_sudoku();
     sudoku1->show_sudoku();
     std::cout<<sudoku1->is_solved();
     return 0;

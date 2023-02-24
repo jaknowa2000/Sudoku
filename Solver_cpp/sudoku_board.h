@@ -1,8 +1,9 @@
 #ifndef sudoku_board_h
 #define sudoku_board_h
 
-#include <vector>
-#include <memory>
+#include<vector> //moze niepotrzebny
+#include<set>
+#include<memory>
 
 class Field{
     public:
@@ -16,6 +17,9 @@ class SmallSquare{
     public:
     std::shared_ptr<Field> small_square[3][3];
     SmallSquare(std::shared_ptr<Field> arr_of_fields[3][3]);
+    void insert_possibilities();
+    private:
+    void insert_if_one_possibility(std::set<int> digits_not_used);
 };
 
 class RowOrColumn{
@@ -34,6 +38,7 @@ class Sudoku{
     void show_sudoku();
     void get_data_from_arr(int* sudoku_arr);
     bool is_solved();
+    void solve_sudoku();
 };
 
 
