@@ -33,7 +33,7 @@ class Sudoku{
     Sudoku();
     void show_sudoku();
     void get_data_from_arr(int* sudoku_arr);
-    // void is_solved();
+    bool is_solved();
 };
 
 

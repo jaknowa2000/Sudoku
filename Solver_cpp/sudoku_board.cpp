@@ -76,6 +76,15 @@ void Sudoku::show_sudoku(){
     std::cout<<"\n";
 };
 
+bool Sudoku::is_solved(){
+    for(auto& row : sudoku){
+        for(auto& item : row){
+            if(item->isset == false) return false;
+        }
+    }
+    return true;
+};
+
 /// @brief This method get from table the data of sudoku puzzle to solve.
 /// @param sudoku_arr This table has to have 81 values, when value is 0 it meaans that
 ///the field in sudoku puzzle was empty.
@@ -83,12 +92,9 @@ void Sudoku::get_data_from_arr(int* sudoku_arr){
     int index_row = 0, index_column = 0;
     int field = 0;
     for(auto& row : sudoku){
-        //std::cout<<"\n"<<index_row<<"\n";
         for(auto& item : row){
             field = sudoku_arr[index_row*9 + index_column];
-            //field = sudoku_arr[1];
             if(field != 0){
-                //std::cout<<index_column;
                 item->value = field;
                 item->isset = true; 
             }
@@ -113,5 +119,6 @@ int main(){
     sudoku1->show_sudoku();
     sudoku1->get_data_from_arr(example_sudoku_tab);
     sudoku1->show_sudoku();
+    std::cout<<sudoku1->is_solved();
     return 0;
 }
