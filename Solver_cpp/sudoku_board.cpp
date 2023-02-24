@@ -22,6 +22,7 @@ class Sudoku{
     std::shared_ptr<SmallSquare> small_squares[3][3];
     //std::shared_ptr<RowOrColumn> small = std::make_shared<RowOrColumn>(arr_of_fields);
     Sudoku();
+    void show_sudoku();
 };
 
 Sudoku::Sudoku(){
@@ -47,6 +48,22 @@ Sudoku::Sudoku(){
     }
 };
 
+void Sudoku::show_sudoku(){
+    std::cout<<"---------------------------------------"<<"\n";
+    int index_row, index_column = 0;
+    for(auto& row : sudoku){
+        index_row++;
+        for(auto& item : row){
+            if(index_column % 3 == 0)std::cout<<"|";
+            if(item->isset == true) std::cout<<item->value<<" | ";
+            else std::cout<<" X |";
+            index_column++;
+        }
+        if(index_row % 3 == 0)std::cout<<"\n---------------------------------------";
+        std::cout<<"\n";
+    }
+};
+
 
 
 
@@ -68,7 +85,8 @@ RowOrColumn::RowOrColumn(std::shared_ptr<Field> arr_of_fields[9]){
 int main(){
     //auto sml1 = std::make_shared<SmallSquare>();
     //auto sml2 = std::make_shared<RowOrColumn>();
-    auto sml3 = std::make_shared<Sudoku>();
+    auto sudoku1 = std::make_shared<Sudoku>();
+    sudoku1->show_sudoku();
     /*int* tab[2][2] = {{1,2},{3,4}};
     int* tab2[2];
     std::copy(tab[1], tab[1]+1, tab2);
