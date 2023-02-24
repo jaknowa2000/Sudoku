@@ -32,6 +32,8 @@ class Sudoku{
     std::shared_ptr<SmallSquare> small_squares[3][3];
     Sudoku();
     void show_sudoku();
+    void get_data_from_arr(int* sudoku_arr);
+    // void is_solved();
 };
 
 
