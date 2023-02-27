@@ -1,6 +1,7 @@
 #include<iostream>
 #include<vector>
 #include<set>
+#include<unordered_set>
 #include<memory> //inteligentne wskazniki
 #include<typeinfo> //pomocne
 #include<algorithm>
@@ -10,6 +11,14 @@
 #include "windows.h" 
 
 #include "sudoku_board.h"
+
+
+class InvalidSolution : public std::exception {
+    public:
+char const * what () {
+        return "The algorithm calculated wrong solution";
+    }
+};
 
 Field::Field(){
     value = 0;
@@ -21,13 +30,12 @@ Field::Field(){
 // TO DO LIST:
 // zeby nie dawac public klasy skojarzone
 // zrobic opisy 
-// sprawdzic czy nie przekazuje w konstruktorach przez wartosc
 // walidacja czy ma 81 elementow
 // zrobic testy
 // test czy insert dziala
-// refaktoryzacja (polacznie klas?)
 // refaktoryzacja (przekazanie przez referencje)
 // zrobic cmake
+// sprawdzic metode przejscia
 //////////////////////////////////////
 
 SmallSquare::SmallSquare(std::shared_ptr<Field> arr_of_fields[3][3]){
@@ -239,6 +247,36 @@ void Sudoku::solve_sudoku(){
     }
 };
 
+void Sudoku::check_sudoku(){
+    std::unordered_set<int> reference_digits = {1,2,3,4,5,6,7,8,9};
+    std::unordered_set<int> digits_used = {};
+    for(auto& row : small_squares){
+        for(auto& small_square : row){
+            for(auto& row_small_square : small_square.get()->small_square){
+                for(auto& item : row_small_square){
+                    digits_used.insert(item->value);
+                }
+            }
+            if(!(digits_used == reference_digits)) throw InvalidSolution();
+            digits_used.clear();
+        }
+    }
+    for(auto& row : rows){
+        for(auto& item : row.get()->row_or_column){
+            digits_used.insert(item->value);
+        }
+        if(!(digits_used == reference_digits)) throw InvalidSolution();
+        digits_used.clear();
+    }
+    for(auto& row : columns){
+        for(auto& item : row.get()->row_or_column){
+            digits_used.insert(item->value);
+        }
+        if(!(digits_used == reference_digits)) throw InvalidSolution();
+        digits_used.clear();
+    }
+};
+
 /// @brief This method get from table the data of sudoku puzzle to solve.
 /// @param sudoku_arr This table has to have 81 values, when value is 0 it meaans that
 ///the field in sudoku puzzle was empty.
@@ -270,21 +308,21 @@ int main(){
                                         0,0,0,7,0,0,0,9,0,
                                         0,6,9,0,0,2,0,5,7,
                                         0,0,5,0,0,6,0,0,4};
-    int example_sudoku_tab[81] = {5,0,3,9,8,4,6,7,0,
-                                  8,0,2,6,1,0,5,0,9,
-                                  6,9,4,0,5,7,8,0,1,
-                                  0,2,6,0,7,0,4,1,5,
-                                  0,5,0,0,2,0,7,0,3,
-                                  3,0,7,0,6,0,0,0,8,
-                                  0,0,0,7,0,0,0,9,0,
-                                  0,6,9,0,0,2,0,5,7,
-                                  0,0,5,0,0,6,0,0,4};
+    int example_sudoku_tab[81] = {0,0,3,5,6,8,0,0,0,
+                                  0,0,7,3,0,0,0,1,0,
+                                  0,0,0,0,9,7,0,0,6,
+                                  4,7,0,0,0,5,2,0,0,
+                                  1,0,0,0,0,0,8,0,5,
+                                  0,0,0,0,0,0,4,0,7,
+                                  0,2,0,0,0,0,0,4,3,
+                                  0,4,0,9,2,6,1,0,0,
+                                  8,9,0,0,0,3,0,0,0};
     sudoku1->show_sudoku();
     //sudoku1->show_possibilities();
     sudoku1->get_data_from_arr(example_sudoku_tab);
     sudoku1->show_sudoku();
     sudoku1->solve_sudoku();
     sudoku1->show_sudoku();
-    std::cout<<sudoku1->is_solved();
+    sudoku1->check_sudoku();
     return 0;
 }

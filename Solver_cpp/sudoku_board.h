@@ -49,6 +49,7 @@ class Sudoku{
     void get_data_from_arr(int* sudoku_arr);
     bool is_solved();
     void solve_sudoku();
+    void check_sudoku();
 };
 
 
