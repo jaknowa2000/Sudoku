@@ -19,10 +19,10 @@ class SmallSquare{
     SmallSquare(std::shared_ptr<Field> arr_of_fields[3][3]);
     void solve_possibilities();
     private:
-    void insert_value_if_one_digit_not_used(std::set<int> digits_not_used);
-    void insert_possibilities_or_value(std::set<int> digits_not_used);
-    void intersection_of_possibilities(std::shared_ptr<Field> item, std::set<int> digits_not_used);
-    void insert_value_if_one_possibility(std::shared_ptr<Field> item, std::set<int> intersection_of_possibilities);
+    void insert_value_if_one_digit_not_used(std::set<int>& digits_not_used);
+    void insert_possibilities_or_value(std::set<int>& digits_not_used);
+    void intersection_of_possibilities(std::shared_ptr<Field> item, std::set<int>& digits_not_used);
+    void insert_value_if_one_possibility(std::shared_ptr<Field> item, std::set<int>& intersection_of_possibilities);
 };
 
 class RowOrColumn{
@@ -31,10 +31,10 @@ class RowOrColumn{
     RowOrColumn(std::shared_ptr<Field> arr_of_fields[9]);
     void solve_possibilities();
     private:
-    void insert_value_if_one_digit_not_used(std::set<int> digits_not_used);
-    void insert_possibilities_or_value(std::set<int> digits_not_used);
-    void intersection_of_possibilities(std::shared_ptr<Field> item, std::set<int> digits_not_used);
-    void insert_value_if_one_possibility(std::shared_ptr<Field> item, std::set<int> intersection_of_possibilities);
+    void insert_value_if_one_digit_not_used(std::set<int>& digits_not_used);
+    void insert_possibilities_or_value(std::set<int>& digits_not_used);
+    void intersection_of_possibilities(std::shared_ptr<Field> item, std::set<int>& digits_not_used);
+    void insert_value_if_one_possibility(std::shared_ptr<Field> item, std::set<int>& intersection_of_possibilities);
 };
 
 class Sudoku{

@@ -5,10 +5,8 @@
 #include<memory> //inteligentne wskazniki
 #include<typeinfo> //pomocne
 #include<algorithm>
-#include<ranges>
-#include<iterator>
-
-#include "windows.h" 
+//#include<ranges>
+//#include<iterator>
 
 #include "sudoku_board.h"
 
@@ -28,13 +26,12 @@ Field::Field(){
 
 //////////////////////////////////////
 // TO DO LIST:
-// zeby nie dawac public klasy skojarzone
-// zrobic opisy 
+// zeby nie dawac public klasy skojarzone //jutro!!
+// zrobic opisy ?(na pewno rozbic na mniejsze!)
 // walidacja czy ma 81 elementow
 // zrobic testy
 // test czy insert dziala
-// refaktoryzacja (przekazanie przez referencje)
-// zrobic cmake
+// zrobic cmake //jutro!!
 // sprawdzic metode przejscia
 //////////////////////////////////////
 
@@ -45,7 +42,6 @@ SmallSquare::SmallSquare(std::shared_ptr<Field> arr_of_fields[3][3]){
         }
     }
 };
-
 
 void SmallSquare::solve_possibilities(){
     std::set<int> digits_not_used = {1,2,3,4,5,6,7,8,9};
@@ -61,7 +57,7 @@ void SmallSquare::solve_possibilities(){
     insert_possibilities_or_value(digits_not_used);
 };
 
-void SmallSquare::insert_value_if_one_digit_not_used(std::set<int> digit_not_used){
+void SmallSquare::insert_value_if_one_digit_not_used(std::set<int>& digit_not_used){
     for(auto& row : small_square){
         for(auto& item : row){
             if(!(item->isset)){
@@ -73,7 +69,7 @@ void SmallSquare::insert_value_if_one_digit_not_used(std::set<int> digit_not_use
     }
 };
 
-void SmallSquare::insert_possibilities_or_value(std::set<int> digits_not_used){
+void SmallSquare::insert_possibilities_or_value(std::set<int>& digits_not_used){
     for(auto& row : small_square){
         for(auto& item : row){
             if(!(item->isset)){
@@ -84,14 +80,14 @@ void SmallSquare::insert_possibilities_or_value(std::set<int> digits_not_used){
     }
 };
 
-void SmallSquare::intersection_of_possibilities(std::shared_ptr<Field> item, std::set<int> digits_not_used){
+void SmallSquare::intersection_of_possibilities(std::shared_ptr<Field> item, std::set<int>& digits_not_used){
     std::set<int> intersection_of_possibilities = {};
     std::set_intersection(item->possible_values.begin(), item->possible_values.end(), digits_not_used.begin(), digits_not_used.end(), std::inserter(intersection_of_possibilities, intersection_of_possibilities.begin()));
     if(intersection_of_possibilities.size() == 1) insert_value_if_one_possibility(item, intersection_of_possibilities);
     else item->possible_values = intersection_of_possibilities;
 };
 
-void SmallSquare::insert_value_if_one_possibility(std::shared_ptr<Field> item, std::set<int> intersection_of_possibilities){
+void SmallSquare::insert_value_if_one_possibility(std::shared_ptr<Field> item, std::set<int>& intersection_of_possibilities){
     item->value = *intersection_of_possibilities.begin();
     item->isset = true;
 };
@@ -114,7 +110,7 @@ void RowOrColumn::solve_possibilities(){
     insert_possibilities_or_value(digits_not_used);
 };
 
-void RowOrColumn::insert_value_if_one_digit_not_used(std::set<int> digit_not_used){
+void RowOrColumn::insert_value_if_one_digit_not_used(std::set<int>& digit_not_used){
     for(auto& item : row_or_column){
         if(!(item->isset)){
             item->value = *digit_not_used.begin();
@@ -124,7 +120,7 @@ void RowOrColumn::insert_value_if_one_digit_not_used(std::set<int> digit_not_use
     }
 };
 
-void RowOrColumn::insert_possibilities_or_value(std::set<int> digits_not_used){
+void RowOrColumn::insert_possibilities_or_value(std::set<int>& digits_not_used){
     for(auto& item : row_or_column){
         if(!(item->isset)){
             if(item->possible_values.size() == 0) item->possible_values = digits_not_used;
@@ -133,14 +129,14 @@ void RowOrColumn::insert_possibilities_or_value(std::set<int> digits_not_used){
     }
 };
 
-void RowOrColumn::intersection_of_possibilities(std::shared_ptr<Field> item, std::set<int> digits_not_used){
+void RowOrColumn::intersection_of_possibilities(std::shared_ptr<Field> item, std::set<int>& digits_not_used){
     std::set<int> intersection_of_possibilities = {};
     std::set_intersection(item->possible_values.begin(), item->possible_values.end(), digits_not_used.begin(), digits_not_used.end(), std::inserter(intersection_of_possibilities, intersection_of_possibilities.begin()));
     if(intersection_of_possibilities.size() == 1) insert_value_if_one_possibility(item, intersection_of_possibilities);
     else item->possible_values = intersection_of_possibilities;
 };
 
-void RowOrColumn::insert_value_if_one_possibility(std::shared_ptr<Field> item, std::set<int> intersection_of_possibilities){
+void RowOrColumn::insert_value_if_one_possibility(std::shared_ptr<Field> item, std::set<int>& intersection_of_possibilities){
     item->value = *intersection_of_possibilities.begin();
     item->isset = true;
 };
