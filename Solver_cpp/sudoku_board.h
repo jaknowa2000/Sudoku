@@ -4,6 +4,7 @@
 #include<vector> //moze niepotrzebny
 #include<set>
 #include<memory>
+#include<unordered_set>
 
 class Field{
     public:
@@ -43,11 +44,15 @@ class Sudoku{
     std::shared_ptr<RowOrColumn> rows[9];
     std::shared_ptr<RowOrColumn> columns[9];
     std::shared_ptr<SmallSquare> small_squares[3][3];
+    void show_possibilities();
+    bool is_solved();
+    void check_tab_size(int* sudoku_tab); //zastanowic sie nad typem
+    void check_small_squares(std::unordered_set<int>& reference_digits, std::unordered_set<int>& digits_used);
+    void check_rows_or_columns(std::unordered_set<int>& reference_digits, std::unordered_set<int>& digits_used, std::shared_ptr<RowOrColumn> (&rows_or_columns)[9]);
+    public:
     Sudoku();
     void show_sudoku();
-    void show_possibilities();
-    void get_data_from_arr(int* sudoku_arr);
-    bool is_solved();
+    void get_data_from_arr(int* sudoku_tab);
     void solve_sudoku();
     void check_sudoku();
 };

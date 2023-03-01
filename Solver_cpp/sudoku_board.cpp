@@ -5,8 +5,6 @@
 #include<memory> //inteligentne wskazniki
 #include<typeinfo> //pomocne
 #include<algorithm>
-//#include<ranges>
-//#include<iterator>
 
 #include "sudoku_board.h"
 
@@ -26,7 +24,6 @@ Field::Field(){
 
 //////////////////////////////////////
 // TO DO LIST:
-// zeby nie dawac public klasy skojarzone //jutro!!
 // zrobic opisy ?(na pewno rozbic na mniejsze!)
 // walidacja czy ma 81 elementow
 // zrobic testy
@@ -141,7 +138,6 @@ void RowOrColumn::insert_value_if_one_possibility(std::shared_ptr<Field> item, s
     item->isset = true;
 };
 
-
 Sudoku::Sudoku(){
     for(auto& row : sudoku){
         for(auto& item : row){
@@ -246,6 +242,12 @@ void Sudoku::solve_sudoku(){
 void Sudoku::check_sudoku(){
     std::unordered_set<int> reference_digits = {1,2,3,4,5,6,7,8,9};
     std::unordered_set<int> digits_used = {};
+    check_small_squares(reference_digits, digits_used);
+    check_rows_or_columns(reference_digits, digits_used, rows);
+    check_rows_or_columns(reference_digits, digits_used, columns); 
+};
+
+void Sudoku::check_small_squares(std::unordered_set<int>& reference_digits, std::unordered_set<int>& digits_used){
     for(auto& row : small_squares){
         for(auto& small_square : row){
             for(auto& row_small_square : small_square.get()->small_square){
@@ -257,14 +259,10 @@ void Sudoku::check_sudoku(){
             digits_used.clear();
         }
     }
-    for(auto& row : rows){
-        for(auto& item : row.get()->row_or_column){
-            digits_used.insert(item->value);
-        }
-        if(!(digits_used == reference_digits)) throw InvalidSolution();
-        digits_used.clear();
-    }
-    for(auto& row : columns){
+};
+
+void Sudoku::check_rows_or_columns(std::unordered_set<int>& reference_digits, std::unordered_set<int>& digits_used, std::shared_ptr<RowOrColumn> (&rows_or_columns)[9]){
+    for(auto& row : rows_or_columns){
         for(auto& item : row.get()->row_or_column){
             digits_used.insert(item->value);
         }
@@ -273,15 +271,16 @@ void Sudoku::check_sudoku(){
     }
 };
 
+
 /// @brief This method get from table the data of sudoku puzzle to solve.
 /// @param sudoku_arr This table has to have 81 values, when value is 0 it meaans that
 ///the field in sudoku puzzle was empty.
-void Sudoku::get_data_from_arr(int* sudoku_arr){
-    int index_row = 0, index_column = 0;
-    int field = 0;
+void Sudoku::get_data_from_arr(int* sudoku_tab){
+    //check_tab_size(sudoku_tab);
+    int index_row = 0, index_column = 0, field = 0;
     for(auto& row : sudoku){
         for(auto& item : row){
-            field = sudoku_arr[index_row*9 + index_column];
+            field = sudoku_tab[index_row*9 + index_column];
             if(field != 0){
                 item->value = field;
                 item->isset = true; 
@@ -293,32 +292,7 @@ void Sudoku::get_data_from_arr(int* sudoku_arr){
     }
 };
 
-int main(){
-    auto sudoku1 = std::make_shared<Sudoku>();
-    int start_example_sudoku_tab[81] = {5,0,3,9,0,0,0,7,0,
-                                        8,0,2,6,1,0,5,0,9,
-                                        6,0,0,0,5,7,8,0,1,
-                                        0,2,6,0,7,0,4,1,5,
-                                        0,5,0,0,2,0,7,0,3,
-                                        3,0,7,0,6,0,0,0,8,
-                                        0,0,0,7,0,0,0,9,0,
-                                        0,6,9,0,0,2,0,5,7,
-                                        0,0,5,0,0,6,0,0,4};
-    int example_sudoku_tab[81] = {0,0,3,5,6,8,0,0,0,
-                                  0,0,7,3,0,0,0,1,0,
-                                  0,0,0,0,9,7,0,0,6,
-                                  4,7,0,0,0,5,2,0,0,
-                                  1,0,0,0,0,0,8,0,5,
-                                  0,0,0,0,0,0,4,0,7,
-                                  0,2,0,0,0,0,0,4,3,
-                                  0,4,0,9,2,6,1,0,0,
-                                  8,9,0,0,0,3,0,0,0};
-    sudoku1->show_sudoku();
-    //sudoku1->show_possibilities();
-    sudoku1->get_data_from_arr(example_sudoku_tab);
-    sudoku1->show_sudoku();
-    sudoku1->solve_sudoku();
-    sudoku1->show_sudoku();
-    sudoku1->check_sudoku();
-    return 0;
-}
+void Sudoku::check_tab_size(int* sudoku_tab){
+    std::cout<<"SIZE "<<sizeof(*sudoku_tab);
+    ///dołożyć
+};
