@@ -22,7 +22,7 @@ class NewVisitorTest(StaticLiveServerTestCase):
     def setUp(self) -> None:
         # self.browsers = (webdriver.Firefox(), webdriver.Chrome(), webdriver.Edge())
         self.browser = webdriver.Firefox()
-        self.browser.implicitly_wait(3)
+        # self.browser.implicitly_wait(3)
 
     def tearDown(self) -> None:
         self.browser.quit()
@@ -31,11 +31,10 @@ class NewVisitorTest(StaticLiveServerTestCase):
     # first user visit the home page with information about functionality of this page
     def test_work_home_page_and_show_info(self):
         self.browser.get(self.live_server_url)
-        header_text = self.browser.find_element(by="tag name", value="h1").text
-        sleep(3)
+        header_text = self.browser.find_element(by="tag name", value="h2").text
 
         self.assertIn("Sudoku", self.browser.title, "Wrong title of home page")
-        self.assertIn("Witaj na stronie", header_text, "There is no basic info on the website")
+        self.assertIn("Znajdujesz się na stronie", header_text, "There is no basic info on the website")
 
     # he decided to solve his sudoku puzzle and selects this option
 
