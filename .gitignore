@@ -1260,3 +1260,4 @@ dkms.conf
 *.uf2
 # Raspberry Pi Pico disassembler file
 *.dis
+/to_do_list.txt
