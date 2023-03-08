@@ -33,7 +33,7 @@ class NewVisitorTest(StaticLiveServerTestCase):
         self.browser.get(self.server_url)
         header_text = self.browser.find_element(by="tag name", value="h2").text
 
-        self.assertIn("Sudoku", self.browser.title, "Wrong title of home page")
+        self.assertEqual("Sudoku", self.browser.title, "Wrong title of home page")
         self.assertIn("Znajdujesz się na stronie", header_text, "There is no basic info on the website")
 
         # he decided to solve his sudoku puzzle and selects this option
@@ -43,7 +43,7 @@ class NewVisitorTest(StaticLiveServerTestCase):
         # he sees new page with empty sudoku board and new title
         user_url = self.browser.current_url
         self.assertRegex(user_url, '/solver/', "Wrong URL for sudoku solver")
-        self.assertIn("Solver", self.browser.title, "Wrong title of solver page")
+        self.assertEqual("Sudoku solver", self.browser.title, "Wrong title of solver page")
             # how to check whether is there sudoku
 
         # he inserts his data into board
