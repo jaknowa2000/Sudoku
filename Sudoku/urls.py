@@ -19,5 +19,6 @@ from Solver_app import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.home, name='home')
+    path('', views.home, name='home'),
+    path('solver/', include('Solver_app.urls')),
 ]
