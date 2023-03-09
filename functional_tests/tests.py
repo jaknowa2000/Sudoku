@@ -58,7 +58,7 @@ class NewVisitorTest(StaticLiveServerTestCase):
         input_fields = self.browser.find_elements(by="name", value="sudoku_field")
         self.assertEqual(len(example_sudoku_board), len(input_fields),
                          "Lengths of example and input fields are different")
-        for field_value in zip(input_fields, example_sudoku_board, strict=True):
+        for field_value in zip(input_fields, example_sudoku_board):
             if field_value[1]:
                 field_value[0].send_keys(field_value[1])
 
