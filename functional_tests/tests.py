@@ -44,10 +44,26 @@ class NewVisitorTest(StaticLiveServerTestCase):
         user_url = self.browser.current_url
         self.assertRegex(user_url, '/solver/', "Wrong URL for sudoku solver")
         self.assertEqual("Sudoku solver", self.browser.title, "Wrong title of solver page")
-            # how to check whether is there sudoku
 
         # he inserts his data into board
+        example_sudoku_board = [0, 0, 3, 5, 6, 8, 0, 0, 0,
+                                0, 0, 7, 3, 0, 0, 0, 1, 0,
+                                0, 0, 0, 0, 9, 7, 0, 0, 6,
+                                4, 7, 0, 0, 0, 5, 2, 0, 0,
+                                1, 0, 0, 0, 0, 0, 8, 0, 5,
+                                0, 0, 0, 0, 0, 0, 4, 0, 7,
+                                0, 2, 0, 0, 0, 0, 0, 4, 3,
+                                0, 4, 0, 9, 2, 6, 1, 0, 0,
+                                8, 9, 0, 0, 0, 3, 0, 0, 0]
+        input_fields = self.browser.find_elements(by="name", value="sudoku_field")
+        self.assertEqual(len(example_sudoku_board), len(input_fields),
+                         "Lengths of example and input fields are different")
+        for field_value in zip(input_fields, example_sudoku_board, strict=True):
+            if field_value[1]:
+                field_value[0].send_keys(field_value[1])
 
-    # he selects a button solve sudoku
+        # he selects a button solve sudoku
+        button_solve = self.browser.find_element(by="name", value="solve")
+        button_solve.click()
 
-    # he sees solved sudoku
+        # he sees solved sudoku
