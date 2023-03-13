@@ -42,3 +42,13 @@ class NewSodokuBoardTest(TestCase):
         new_sudoku_board = SudokuBoard.objects.first()
         self.assertEqual(new_sudoku_board.fields, sudoku_board_example)
 
+    def test_redirect_to_solved_view(self):
+        sudoku_board_example = [i for i in range(1, 10)] + [i for i in range(9, 0, -1)] + [7] * 9
+        sudoku_board_example *= 3
+        sudoku_board_data = {'fields': sudoku_board_example}
+
+        response = self.client.post(f'/solver/new', data=sudoku_board_data)
+        new_board = SudokuBoard.objects.first()
+
+        self.assertRedirects(response, f'/solver/{new_board.id}/')
+
