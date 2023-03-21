@@ -5,6 +5,27 @@ import os
 from time import sleep
 
 
+EXAMPLE_SUDOKU_BOARD = [0, 0, 3, 5, 6, 8, 0, 0, 0,
+                        0, 0, 7, 3, 0, 0, 0, 1, 0,
+                        0, 0, 0, 0, 9, 7, 0, 0, 6,
+                        4, 7, 0, 0, 0, 5, 2, 0, 0,
+                        1, 0, 0, 0, 0, 0, 8, 0, 5,
+                        0, 0, 0, 0, 0, 0, 4, 0, 7,
+                        0, 2, 0, 0, 0, 0, 0, 4, 3,
+                        0, 4, 0, 9, 2, 6, 1, 0, 0,
+                        8, 9, 0, 0, 0, 3, 0, 0, 0]
+
+RESULT_EXAMPLE = [9, 1, 3, 5, 6, 8, 7, 2, 4,
+                  6, 8, 7, 3, 4, 2, 5, 1, 9,
+                  2, 5, 4, 1, 9, 7, 3, 8, 6,
+                  4, 7, 9, 6, 8, 5, 2, 3, 1,
+                  1, 6, 2, 7, 3, 4, 8, 9, 5,
+                  5, 3, 8, 2, 1, 9, 4, 6, 7,
+                  7, 2, 6, 8, 5, 1, 9, 4, 3,
+                  3, 4, 5, 9, 2, 6, 1, 7, 8,
+                  8, 9, 1, 4, 7, 3, 6, 5, 2]
+
+
 class NewVisitorTest(StaticLiveServerTestCase):
     @classmethod
     def setUpClass(cls):
@@ -46,24 +67,19 @@ class NewVisitorTest(StaticLiveServerTestCase):
         self.assertEqual("Sudoku solver", self.browser.title, "Wrong title of solver page")
 
         # he inserts his data into board
-        example_sudoku_board = [0, 0, 3, 5, 6, 8, 0, 0, 0,
-                                0, 0, 7, 3, 0, 0, 0, 1, 0,
-                                0, 0, 0, 0, 9, 7, 0, 0, 6,
-                                4, 7, 0, 0, 0, 5, 2, 0, 0,
-                                1, 0, 0, 0, 0, 0, 8, 0, 5,
-                                0, 0, 0, 0, 0, 0, 4, 0, 7,
-                                0, 2, 0, 0, 0, 0, 0, 4, 3,
-                                0, 4, 0, 9, 2, 6, 1, 0, 0,
-                                8, 9, 0, 0, 0, 3, 0, 0, 0]
         input_fields = self.browser.find_elements(by="name", value="sudoku_field")
-        self.assertEqual(len(example_sudoku_board), len(input_fields),
+        self.assertEqual(len(EXAMPLE_SUDOKU_BOARD), len(input_fields),
                          "Lengths of example and input fields are different")
-        for field_value in zip(input_fields, example_sudoku_board):
+        for field_value in zip(input_fields, EXAMPLE_SUDOKU_BOARD):
             if field_value[1]:
                 field_value[0].send_keys(field_value[1])
 
         # he selects a button solve sudoku
         button_solve = self.browser.find_element(by="name", value="solve")
+        self.assertNotEqual(button_solve, "There is no button")
         button_solve.click()
 
         # he sees solved sudoku
+        result_board = self.browser.find_elements(by='tag name', value='td')
+
+        self.assertEqual(result_board, RESULT_EXAMPLE, "Wrong result of Sudoku")
