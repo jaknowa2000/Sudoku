@@ -1,15 +1,18 @@
-<!DOCTYPE html>
-<html lang="pl-PL">
-<head>
-    <meta charset="UTF-8">
-    <title>Sudoku</title>
-</head>
-<body>
-    <h1>Witaj!</h1>
-    <h2>Znajdujesz się na stronie stronie poświęconej zagadkom Sudoku.</h2>
-    Wprowadzam informacje o sudoku.
-    <a href="{% url 'Solver_app:solver' %}">
-        <button type="button" name="solve">Rozwiązywanie sudoku</button>
-    </a>
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block title %}Sudoku{% endblock %}
+
+{% block body %}
+    <h1 class="text-center m-3 ">Pasja Sudoku</h1>
+    <h2 class="text-center m-2">
+        Witaj, znajdujesz się na stronie stronie poświęconej zagadkom Sudoku.</h2>
+    <p class="text-xxl-start px-3 pt-4">Sudoku – łamigłówka, której celem jest wypełnienie diagramu 9 × 9 w taki sposób,
+        aby w każdym wierszu, w każdej kolumnie i w każdym z dziewięciu pogrubionych kwadratów 3 × 3 (zwanych „blokami”
+        lub „podkwadratami”) znalazło się po jednej cyfrze od 1 do 9.</p>
+    <h6 class="text-center px-3 pt-3">Przejź do aplikacji rozwiązującej Sudoku:</h6>
+    <div class="text-center">
+        <a href="{% url 'Solver_app:solver' %}">
+            <button type="button" class="btn btn-success mx-3 mt-3" name="solve">Rozwiązywanie sudoku</button>
+        </a>
+    </div>
+{% endblock %}
