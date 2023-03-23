@@ -1,28 +1,21 @@
-<!DOCTYPE html>
-<html lang="pl-PL">
-<style>
-table, th, td {
-  border:1px solid black;
-}
-</style>
-<head>
-    <meta charset="UTF-8">
-    <title>Sudoku solver</title>
-</head>
-<body>
-<h1>Wprowadź dane do Sudoku!</h1>
-<table id="sudoku">
-    <tbody>
-        {% for value in board.fields %}
-            {% if forloop.counter0|divisibleby:"9" %}
-                <tr>
-            {% endif %}
-            <td>{{ value }}</td>
-            {% if forloop.counter|divisibleby:"9" %}
-                </tr>
-            {% endif %}
-        {% endfor %}
-    </tbody>
-</table><br><br>
-</body>
-</html>
+{% extends 'base.html' %}
+
+
+{% block title %}Sudoku solver{% endblock %}
+
+{% block body %}
+    <h1 class="text-center m-4 mb-5">Rozwiązanie:</h1>
+    <table id="sudoku" class="mx-auto bg-white">
+        <tbody>
+            {% for value in board.fields %}
+                {% if forloop.counter0|divisibleby:"9" %}
+                    <tr>
+                {% endif %}
+                <td class="text-center">{{ value }}</td>
+                {% if forloop.counter|divisibleby:"9" %}
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock body %}
