@@ -1,13 +1,17 @@
 #include<iostream>
 #include<vector>
 #include<set>
+#include<array>
 #include<unordered_set>
 #include<memory> //inteligentne wskazniki
 #include<typeinfo> //pomocne
 #include<algorithm>
+#include <stdio.h>
+#include <stdlib.h> 
 
 #include "sudoku_board.h"
 
+extern "C"{
 
 class InvalidSolution : public std::exception {
     public:
@@ -20,7 +24,7 @@ Field::Field(){
     value = 0;
     isset = false;
     possible_values = {};
-}
+};
 
 //////////////////////////////////////
 // TO DO LIST:
@@ -275,7 +279,7 @@ void Sudoku::check_rows_or_columns(std::unordered_set<int>& reference_digits, st
 /// @brief This method get from table the data of sudoku puzzle to solve.
 /// @param sudoku_arr This table has to have 81 values, when value is 0 it meaans that
 ///the field in sudoku puzzle was empty.
-void Sudoku::get_data_from_arr(int* sudoku_tab){
+void Sudoku::get_data_from_arr(std::array<int, 81>& sudoku_tab){
     //check_tab_size(sudoku_tab);
     int index_row = 0, index_column = 0, field = 0;
     for(auto& row : sudoku){
@@ -296,3 +300,44 @@ void Sudoku::check_tab_size(int* sudoku_tab){
     std::cout<<"SIZE "<<sizeof(*sudoku_tab);
     ///dołożyć
 };
+
+std::array<int, 81> Sudoku::return_solved_sudoku(){
+    std::array<int, 81> sudoku_result;
+    int index_row = 0, index_column = 0;
+    for(auto& row : sudoku){
+        for(auto& item : row){
+            sudoku_result[index_row*9 + index_column] = item->value;
+            index_column++;
+        }
+        index_column=0;
+        index_row++;
+    }
+    return sudoku_result;
+};
+
+
+std::array<int, 81> fun_solve_sudoku(std::array<int, 81>& sudoku_board_values){
+    auto sudoku = std::make_shared<Sudoku>();
+    sudoku->get_data_from_arr(sudoku_board_values);
+    sudoku->solve_sudoku();
+    auto sudoku_result = sudoku->return_solved_sudoku();
+    return sudoku_result;
+};
+
+int dudu(){
+    int a = 1234;
+    return a;
+}
+
+}
+extern "C"{
+int getArray() {
+    int dupa[10];
+    int *array = (int *) malloc(10 * sizeof(int));
+    for (int i = 0; i < 10; i++) {
+        dupa[i] = i;
+    }
+    return 14;
+}
+}
+

@@ -3,8 +3,11 @@
 
 #include<vector> //moze niepotrzebny
 #include<set>
+#include<array>
 #include<memory>
 #include<unordered_set>
+
+extern "C"{
 
 class Field{
     public:
@@ -39,7 +42,7 @@ class RowOrColumn{
 };
 
 class Sudoku{
-    public:
+    public: //moze private
     std::shared_ptr<Field> sudoku[9][9];
     std::shared_ptr<RowOrColumn> rows[9];
     std::shared_ptr<RowOrColumn> columns[9];
@@ -52,10 +55,15 @@ class Sudoku{
     public:
     Sudoku();
     void show_sudoku();
-    void get_data_from_arr(int* sudoku_tab);
+    void get_data_from_arr(std::array<int, 81>& sudoku_tab);
     void solve_sudoku();
     void check_sudoku();
+    std::array<int, 81> return_solved_sudoku();
 };
 
+std::array<int, 81> fun_solve_sudoku(std::array<int, 81>& sudoku_board_values);
+
+int dudu();
+}
 
 #endif
