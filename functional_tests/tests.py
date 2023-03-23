@@ -55,7 +55,7 @@ class NewVisitorTest(StaticLiveServerTestCase):
         header_text = self.browser.find_element(by="tag name", value="h2").text
 
         self.assertEqual("Sudoku", self.browser.title, "Wrong title of home page")
-        self.assertIn("Znajdujesz się na stronie", header_text, "There is no basic info on the website")
+        self.assertIn("znajdujesz się na stronie", header_text, "There is no basic info on the website")
 
         # he decided to solve his sudoku puzzle and selects this option
         button_solve = self.browser.find_element(by="name", value="solve")
