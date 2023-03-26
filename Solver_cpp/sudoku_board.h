@@ -7,7 +7,6 @@
 #include<memory>
 #include<unordered_set>
 
-extern "C"{
 
 class Field{
     public:
@@ -63,7 +62,5 @@ class Sudoku{
 
 std::array<int, 81> fun_solve_sudoku(std::array<int, 81>& sudoku_board_values);
 
-int dudu();
-}
 
 #endif

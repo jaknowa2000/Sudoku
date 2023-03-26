@@ -11,8 +11,6 @@
 
 #include "sudoku_board.h"
 
-extern "C"{
-
 class InvalidSolution : public std::exception {
     public:
 char const * what () {
@@ -324,20 +322,4 @@ std::array<int, 81> fun_solve_sudoku(std::array<int, 81>& sudoku_board_values){
     return sudoku_result;
 };
 
-int dudu(){
-    int a = 1234;
-    return a;
-}
-
-}
-extern "C"{
-int getArray() {
-    int dupa[10];
-    int *array = (int *) malloc(10 * sizeof(int));
-    for (int i = 0; i < 10; i++) {
-        dupa[i] = i;
-    }
-    return 14;
-}
-}
 

@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from Solver_app.models import SudokuBoard
+from Solver_app.pysolver import solve
 
 
 def home(request):
@@ -12,7 +13,8 @@ def solver(request):
 
 def new_sudoku_puzzle(request):
     post_request_list = list(map(lambda x: int(x) if x else 0, request.POST.getlist('sudoku_field')))
-    sudoku_puzzle = SudokuBoard.objects.create(fields=post_request_list)
+    solved_puzzle = solve(post_request_list)
+    sudoku_puzzle = SudokuBoard.objects.create(fields=solved_puzzle)
     return redirect(f'/solver/{sudoku_puzzle.id}/')
 
 
